@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katalog Potensi Komoditas — Desa Sumberejo</title>
+<style>
+  :root {
+    --hijau-tua: #3D4A2E;
+    --hijau-daun: #5B6E43;
+    --terracotta: #A85C32;
+    --krem: #F2ECDD;
+    --krem-kartu: #FBF8F0;
+    --coklat-teks: #2B241C;
+    --coklat-muda: #6B5F4F;
+    --garis: #DCD3BC;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--krem);
+    color: var(--coklat-teks);
+    font-family: "Georgia", "Times New Roman", serif;
+    line-height: 1.6;
+  }
+
+  .label-sans {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  header {
+    background: var(--hijau-tua);
+    color: var(--krem);
+    padding: 4rem 1.5rem 3.5rem;
+    text-align: left;
+  }
+
+  .header-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  header .eyebrow {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.85rem;
+    color: #C9CFB8;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    max-width: 14ch;
+  }
+
+  header p {
+    margin-top: 1.2rem;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 1rem;
+    color: #DCE0CB;
+    max-width: 60ch;
+  }
+
+  nav.dusun-nav {
+    background: var(--krem-kartu);
+    border-bottom: 1px solid var(--garis);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  nav.dusun-nav ul {
+    max-width: 1000px;
+    margin: 0 auto;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  nav.dusun-nav a {
+    display: block;
+    padding: 0.9rem 1.1rem;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.9rem;
+    color: var(--coklat-muda);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  nav.dusun-nav a:hover,
+  nav.dusun-nav a:focus-visible {
+    color: var(--hijau-tua);
+    border-bottom-color: var(--terracotta);
+  }
+
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  section.dusun {
+    padding: 3.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--garis);
+    scroll-margin-top: 4.5rem;
+  }
+
+  section.dusun:last-of-type {
+    border-bottom: none;
+  }
+
+  .dusun-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .dusun-heading h2 {
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--hijau-tua);
+  }
+
+  .dusun-heading .jumlah {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.85rem;
+    color: var(--coklat-muda);
+  }
+
+  .dusun-desc {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.92rem;
+    color: var(--coklat-muda);
+    max-width: none;
+    text-align: justify;
+    margin-bottom: 2.2rem;
+  }
+
+  .blok-komoditas {
+    background: var(--krem-kartu);
+    border: 1px solid var(--garis);
+    margin-bottom: 2rem;
+  }
+
+  .blok-komoditas:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Kolase: keseluruhan blok berrasio 18:9, foto utama besar + foto kecil di samping */
+  .galeri-foto {
+    aspect-ratio: 18 / 9;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3px;
+    background: var(--garis);
+    overflow: hidden;
+  }
+
+  .galeri-foto .foto-utama {
+    grid-row: 1 / -1;
+  }
+
+  .galeri-foto .foto-kecil-wrap {
+    display: grid;
+    grid-template-rows: repeat(var(--jumlah-kecil, 3), 1fr);
+    gap: 3px;
+  }
+
+  /* Varian: foto utama di atas, foto kecil berjejer di bawah */
+  .galeri-foto.layout-vertikal {
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+  }
+
+  .galeri-foto.layout-vertikal .foto-utama {
+    grid-row: auto;
+  }
+
+  .galeri-foto.layout-vertikal .foto-kecil-wrap {
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(var(--jumlah-kecil, 3), 1fr);
+  }
+
+  /* Varian: foto utama di kanan, foto kecil di kiri */
+  .galeri-foto.layout-kanan {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .galeri-foto.layout-kanan .foto-utama {
+    order: 2;
+  }
+
+  .galeri-foto.layout-kanan .foto-kecil-wrap {
+    order: 1;
+  }
+
+  /* Varian: grid rata, tanpa foto utama besar */
+  .galeri-foto.layout-grid-rata {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .galeri-foto.layout-grid-rata .foto-item {
+    grid-row: auto;
+  }
+
+  /* Varian Kopi: foto utama tinggi di kiri, empat foto pendamping dalam grid 2x2 */
+  .galeri-foto.layout-kopi {
+    grid-template-columns: 1.35fr 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .galeri-foto.layout-kopi .foto-utama {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+
+  .galeri-foto.layout-kopi .foto-kecil-wrap {
+    display: contents;
+  }
+
+  .galeri-foto.layout-kopi .foto-kecil-wrap .foto-item {
+    grid-row: auto;
+  }
+
+  /* Varian: foto utama full di atas, foto kecil berjejer di bawah (mirip layout-vertikal tapi proporsi beda) */
+  .galeri-foto.layout-atas-penuh {
+    grid-template-columns: 1fr;
+    grid-template-rows: 3fr 1fr;
+  }
+
+  .galeri-foto.layout-atas-penuh .foto-utama {
+    grid-row: auto;
+  }
+
+  .galeri-foto.layout-atas-penuh .foto-kecil-wrap {
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(var(--jumlah-kecil, 3), 1fr);
+  }
+
+  /* Varian: 3 foto sejajar rata, tanpa foto utama */
+  .galeri-foto.layout-sejajar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .galeri-foto.layout-sejajar .foto-item {
+    grid-row: auto;
+  }
+
+  /* Varian: foto utama kanan-atas besar, 1 kecil kiri, 1 kecil kanan-bawah (L-shape) */
+  .galeri-foto.layout-l-shape {
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 2fr 1fr;
+  }
+
+  .galeri-foto.layout-l-shape .foto-samping {
+    grid-column: 1;
+    grid-row: 1 / -1;
+  }
+
+  .galeri-foto.layout-l-shape .foto-utama {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .galeri-foto.layout-l-shape .foto-bawah {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .foto-item {
+    background: var(--krem-kartu);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--coklat-muda);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 0.4rem;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+
+  .foto-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .komoditas-isi {
+    padding: 1.5rem 1.8rem 1.8rem;
+  }
+
+  .komoditas-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .komoditas-isi h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--coklat-teks);
+  }
+
+  .kategori-tag {
+    display: inline-block;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.72rem;
+    color: var(--terracotta);
+    border: 1px solid var(--terracotta);
+    padding: 0.15rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  .komoditas-isi p {
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.93rem;
+    color: var(--coklat-muda);
+    max-width: none;
+    text-align: justify;
+  }
+
+  .narahubung {
+    margin-top: 1.1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--garis);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.82rem;
+    color: var(--coklat-muda);
+  }
+
+  .narahubung strong {
+    color: var(--coklat-teks);
+    font-weight: 600;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2.5rem 1.5rem 3rem;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.82rem;
+    color: var(--coklat-muda);
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 3rem 1.2rem 2.5rem; }
+    section.dusun { padding: 2.5rem 0 2rem; }
+    .galeri-foto { grid-template-columns: 3fr 2fr; }
+    .galeri-foto.layout-kanan { grid-template-columns: 2fr 3fr; }
+    .galeri-foto.layout-l-shape { grid-template-columns: 2fr 3fr; }
+    .komoditas-isi { padding: 1.2rem 1.3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow label-sans">DESA SUMBEREJO · KECAMATAN PONCOKUSUMO</div>
+    <h1>Katalog Potensi Komoditas Dusun</h1>
+    <p>Ragam hasil bumi dan kerajinan dari lima dusun di Desa Sumberejo, sebagai gambaran potensi unggulan dan produk lokal masyarakat.</p>
+  </div>
+</header>
+
+<nav class="dusun-nav label-sans" aria-label="Navigasi dusun">
+  <ul>
+    <li><a href="#jajang">Jajang</a></li>
+    <li><a href="#wonokerto">Wonokerto</a></li>
+    <li><a href="#aran-aran">Aran-Aran</a></li>
+    <li><a href="#krajan">Krajan</a></li>
+    <li><a href="#sumberdewo">Sumberdewo</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- Dusun Jajang -->
+  <section class="dusun" id="jajang">
+    <div class="dusun-heading">
+      <h2>Jajang</h2>
+    </div>
+    <p class="dusun-desc">Dusun dengan komoditas pertanian paling beragam, mencakup hasil kebun dan produk olahan kuliner.</p>
+
+    <!-- Tomat -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-vertikal">
+        <div class="foto-item foto-utama"><img src="foto/tomat_utama.jpeg" alt="Tomat Utama"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 2;">
+          <div class="foto-item"><img src="foto/tomat1.jpeg" alt="Tomat1"></div>
+          <div class="foto-item"><img src="foto/tomat2.jpeg" alt="Tomat2"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Tomat</h3>
+          <span class="kategori-tag">Pertanian</span>
+        </div>
+        <p>Sektor pertanian di Desa Sumberejo didukung oleh budidaya komoditas Tomat Serpo (Sirpo) yang dikelola secara mandiri oleh petani lokal seperti Pak Aziz. Menggunakan sekitar 3.500 bibit untuk lahan dua pak, tanaman tomat sayur ini membutuhkan masa tanam hingga panen selama kurang lebih tiga bulan. Dalam proses perawatannya, petani menghadapi tantangan irigasi musim kemarau yang harus dilakukan secara manual dua hari sekali menggunakan jerigen sangkletan gendong akibat ketiadaan mesin pemompa air. Selain itu, pengendalian hama ulat membutuhkan biaya pestisida sekitar Rp200.000 per botol. Meskipun pemupukan kerap terkendala akibat keterbatasan modal, tanaman ini tetap mampu menghasilkan buah berukuran besar yang segar. Sistem pemasarannya bergantung penuh pada transaksi dengan tengkulak. Harga jual tomat sangat fluktuatif, berkisar dari harga terendah Rp1.000 per kilogram yang hanya menutup biaya kuli panen, hingga mencapai harga normal Rp6.000–Rp7.000 dan puncak harganya Rp15.000 per kilogram. Hasil panen segar ini kemudian didistribusikan ke pasar tradisional di wilayah Tumpang dan Wajak, sementara buah yang busuk langsung dibuang di area lahan.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Aziz &nbsp; <strong>Telepon:</strong> 081276677419</div>
+      </div>
+    </div>
+
+    <!-- Jeruk -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto">
+        <div class="foto-item foto-utama"><img src="foto/jeruk_utama.jpeg" alt="Jeruk Utama"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 2;">
+          <div class="foto-item"><img src="foto/jeruk1.jpeg" alt="Jeruk1"></div>
+          <div class="foto-item"><img src="foto/jeruk2.jpeg" alt="Jeruk2"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Jeruk</h3>
+          <span class="kategori-tag">Pertanian</span>
+        </div>
+        <p>Komoditas hortikultura unggulan lainnya di Desa Sumberejo adalah Jeruk Siamadu (Siam Madu) yang dibudidayakan di area tegalan dan lereng perbukitan desa. Jeruk varietas ini sangat dikenal oleh masyarakat dengan cita rasanya yang manis segar serta kondisi fisik buah yang gemuk dan berkualitas tinggi. Kondisi iklim dan tanah lokal di Sumberejo dinilai sangat cocok, menjadikan kawasan ini mampu menghasilkan pertanaman jeruk Siamadu terbaik dibanding wilayah sekitarnya. Dari segi budidaya, tanaman jeruk memerlukan perawatan intensif serta pemupukan yang teratur dan berkesinambungan. Ketersediaan modal kerja yang memadai menjadi faktor penentu utama agar pohon jeruk dapat tumbuh subur dan berbuah secara maksimal. Berbeda dengan komoditas yang diolah terlebih dahulu, hasil panen jeruk dari para petani Sumberejo dipasarkan secara langsung dalam bentuk buah mentah segar. Transaksi penjualan biasanya dilakukan secara borongan di lokasi lahan atau melalui perantara tengkulak langganan. Buah jeruk unggulan ini secara konsisten didistribusikan untuk pasar lokal hingga dikirim dalam jumlah besar ke kota-kota luar daerah seperti Yogyakarta dan Surabaya.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Aziz &nbsp; <strong>Telepon:</strong> 081276677419</div>
+      </div>
+    </div>
+
+    <!-- Bawang -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-sejajar">
+        <div class="foto-item"><img src="foto/bawang1.jpeg" alt="Bawang1"></div>
+        <div class="foto-item"><img src="foto/bawang2.jpeg" alt="Bawang2"></div>
+        <div class="foto-item"><img src="foto/bawang3.jpeg" alt="Bawang3"></div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Bawang</h3>
+          <span class="kategori-tag">Pertanian</span>
+        </div>
+        <p>Potensi komoditas hortikultura Desa Sumberejo juga didukung oleh budidaya Bawang Segon (daun bawang varietas Segon) yang ditanam di kawasan lereng perbukitan lahan warga. Komoditas ini memiliki ciri fisik daun berwarna hijau segar dan tumbuh dengan subur pada area tanah kemiringan desa. Dalam pola penanamannya, Bawang Segon sering kali dikombinasikan atau ditanam berselang-seling di sekitar lahan tanaman hortikultura lainnya. Perawatan komoditas ini terbilang praktis pada masa kemarau, namun menghadapi kendala yang cukup besar ketika memasuki musim penghujan. Curah hujan yang tinggi dan genangan air berlebih menjadi ancaman utama yang memicu risiko kebusukan daun serta kerusakan tanaman akibat kelebihan pasokan air. Pengelolaan pertanian dilakukan secara mandiri oleh petani tanpa adanya fasilitas subsidi pupuk atau bantuan khusus dari kelompok tani. Penjualan Bawang Segon umumnya memanfaatkan jalur perantara tengkulak yang datang membeli langsung di area lahan dengan kisaran harga penawaran Rp3.000 hingga Rp4.000 per kilogram. Dari lokasi panen, daun bawang segar ini selanjutnya disalurkan ke pasar-pasar tradisional di wilayah Wajak dan Tumpang untuk memenuhi kebutuhan bumbu konsumsi harian masyarakat.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Aziz &nbsp; <strong>Telepon:</strong> 081276677419</div>
+      </div>
+    </div>
+
+    <!-- Selai Jeruk -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-vertikal">
+        <div class="foto-item foto-utama"><img src="foto/selai1.jpeg" alt="Selai Jeruk1"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 2;">
+          <div class="foto-item"><img src="foto/selai2.jpeg" alt="Selai Jeruk2"></div>
+          <div class="foto-item"><img src="foto/selai3.jpeg" alt="Selai Jeruk3"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Selai Jeruk</h3>
+          <span class="kategori-tag">Olahan</span>
+        </div>
+        <p>Diversifikasi hasil pertanian jeruk di Dusun Jajang, Desa Sumberejo kini diwujudkan melalui produk olahan Selai Jeruk (Orange Jam). Inovasi bernilai tambah ini awalnya digagas oleh mahasiswa dan kini secara berkelanjutan diteruskan proses produksinya oleh warga lokal setempat, Mas Furry. Menggunakan bahan baku utama jeruk lokal segar pilihan, proses pembuatannya diawali dengan mengupas kulit jeruk serta membersihkan bagian serat putih secara teliti guna menghilangkan rasa pahit alami. Daging buah jeruk kemudian dipotong, dikeluarkan isinya, lalu dihaluskan menggunakan mesin chopper hingga bertekstur lembut. Selanjutnya, adonan buah dimasak di atas wajan dengan penambahan lima sendok makan gula pasir serta racikan kayu manis, lalu diaduk secara konsisten hingga mengental matang sempurna. Olahan pangan ini menghasilkan cita rasa manis-asam segar dengan aroma rempah kayu manis yang harum khas. Dikemas secara higienis dalam stoples kaca anggun (glass jar) berlabel rapi, selai jeruk ini siap dipasarkan sebagai produk suvenir kuliner unggulan. Pengembangan potensi skala produksi serta perluasan jalur pemasaran digital diharapkan mampu meningkatkan pendapatan ekonomi warga sekaligus memaksimalkan potensi melimpah hasil panen jeruk Desa Sumberejo.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Mas Furry &nbsp; <strong>Telepon:</strong> 082338786118</div>
+      </div>
+    </div>
+
+    <!-- Asbak Bambu -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-l-shape">
+        <div class="foto-item foto-samping"><img src="foto/asbak1.jpeg" alt="Asbak Bambu1"></div>
+        <div class="foto-item foto-utama"><img src="foto/asbak2.jpeg" alt="Asbak Bambu2"></div>
+        <div class="foto-item foto-bawah"><img src="foto/asbak3.jpeg" alt="Asbak Bambu3"></div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Asbak Bambu</h3>
+          <span class="kategori-tag">Kerajinan</span>
+        </div>
+        <p>Pemanfaatan limbah secara kreatif menjadi salah satu wujud kepedulian lingkungan sekaligus pemberdayaan ekonomi di Dusun Jajang, Desa Sumberejo. Melalui tangan terampil Bapak Jazuli, sisa potongan ruas Bambu Petung dari proses pembuatan tusuk sate yang biasanya hanya dibakar, kini berhasil didaur ulang menjadi kerajinan Asbak Bambu bernilai fungsional. Produk inovatif ini memanfaatkan bagian ruas atau bongkot bambu yang tebal dan kokoh sehingga memiliki daya tahan kuat. Dalam proses pembuatannya, potongan sisa bambu dirapikan bagian tepinya, dihaluskan, lalu diberi lekukan atau coakan khusus penahan rokok sebelum dilapis warna cat putih bersih untuk memberikan tampilan visual yang estetis. Kerajinan daur ulang ini diproduksi secara mandiri dan menjadi solusi efektif dalam mengurangi polusi asap akibat pembakaran limbah bambu di pemukiman. Selain ramah lingkungan, keunikan asbak ini terletak pada tekstur serat alami bambu yang khas. Dengan wilayah pemasaran yang mencakup pembeli lokal dan wisatawan, komoditas ini memiliki potensi besar untuk dikembangkan lebih luas sebagai suvenir unik kriya khas Desa Sumberejo. Pengembangan pemasaran digital dan diversifikasi varian warna dapat menjadi peluang strategis usaha ke depan.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Jazuli &nbsp; <strong>Telepon:</strong> 081231822884</div>
+      </div>
+    </div>
+
+    <!-- Tusuk Sate -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto">
+        <div class="foto-item foto-utama"><img src="foto/tusuk_jajang_utama.jpeg" alt="Tusuk Jajang Utama"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 3;">
+          <div class="foto-item"><img src="foto/tusuk_jajang1.jpeg" alt="Tusuk Jajang1"></div>
+          <div class="foto-item"><img src="foto/tusuk_jajang2.jpeg" alt="Tusuk Jajang2"></div>
+          <div class="foto-item"><img src="foto/tusuk_jajang3.jpeg" alt="Tusuk Jajang3"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Tusuk Sate</h3>
+          <span class="kategori-tag">Kerajinan</span>
+        </div>
+        <p>Industri kerajinan tusuk sate di Desa Sumberejo digerakkan oleh perajin mandiri seperti Bapak Jazuli yang konsisten mempertahankan proses pembuatan tradisional secara teliti. Berbeda dari produk kriya bambu pada umumnya, usaha ini menggunakan bahan baku utama Bambu Petung pilihan, di mana satu batang bambu dapat menghasilkan sekitar 1.000 tusuk. Setiap bagian bambu diolah dan diserut secara manual hingga mencapai ketebalan presisi sekitar 1 mm. Tahap berikutnya adalah penjemuran di bawah sinar matahari hingga kering sempurna guna membuang serabut serta menjaga keawetan bambu. Dikerjakan secara independen sejak pagi hari, kapasitas produksi harian mampu mencapai 4.000 hingga 5.000 tusuk sate maupun tusuk cilok. Seluruh hasil produksi dikemas rapi dalam ikatan berkapasitas 1.000 tusuk. Terdapat tiga varian ukuran utama, yaitu 46 cm seharga Rp10.000, 38 cm seharga Rp6.000, serta ukuran 25 cm seharga Rp20.000 per ikat. Pemasaran hasil kerajinan ini berjalan secara berkelanjutan melalui skema pengiriman langsung ke pengepul lokal di wilayah setempat setiap kali kuota produksi harian telah terpenuhi. Keberadaan usaha ini memperkuat rantai pasok ekonomi kriya lokal sekaligus menjaga potensi kerajinan bambu tradisional Desa Sumberejo.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Jazuli &nbsp; <strong>Telepon:</strong> 081231822884</div>
+      </div>
+    </div>
+
+    <!-- Kopi -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-kopi">
+        <div class="foto-item foto-utama"><img src="foto/kopi_utama.jpeg" alt="Kopi Utama"></div>
+        <div class="foto-kecil-wrap">
+          <div class="foto-item"><img src="foto/kopi1.jpeg" alt="Kopi1"></div>
+          <div class="foto-item"><img src="foto/kopi2.jpeg" alt="Kopi2"></div>
+          <div class="foto-item"><img src="foto/kopi3.jpeg" alt="Kopi3"></div>
+          <div class="foto-item"><img src="foto/kopi4.jpeg" alt="Kopi4"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Kopi</h3>
+          <span class="kategori-tag">Pertanian</span>
+        </div>
+        <p>Perkebunan kopi Robusta milik Mas Deni menjadi salah satu potensi komoditas pertanian unggulan di Desa Sumberejo yang dikembangkan di atas lahan seluas 12 hektar. Usaha budidaya kopi ini telah berjalan selama kurang lebih delapan tahun sejak 2018, dengan memanfaatkan tingkat kesuburan tanah setempat dan tingginya curah musim hujan yang mendukung pertumbuhan tanaman secara optimal. Berawal dari penanaman bibit secara mandiri, tanaman kopi Robusta di wilayah ini sudah mulai dapat dipanen saat memasuki usia 2,5 tahun. Musim panen berlangsung satu kali dalam setahun, di mana pemetikan dilakukan secara berkala setiap seminggu sekali dengan hanya memilih biji kopi yang telah berwarna merah matang. Dalam satu kali periode petik, perkebunan ini mampu menghasilkan sekitar 4 hingga 5 sak biji kopi. Mutu produk terjaga melalui proses penjemuran alami serta pengolahan pascapanen yang cermat guna meminimalkan kadar air dan mempertahankan aroma alaminya. Hasil panen komoditas kopi Robusta ini selanjutnya dipasarkan dengan kisaran harga Rp50.000 hingga Rp70.000 per kilogram, baik untuk konsumsi lokal maupun memenuhi permintaan kedai kopi di daerah sekitar.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Mas Deni &nbsp; <strong>Telepon:</strong> 085259541951</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Dusun Wonokerto -->
+  <section class="dusun" id="wonokerto">
+    <div class="dusun-heading">
+      <h2>Wonokerto</h2>
+    </div>
+    <p class="dusun-desc">Dikenal sebagai sentra produk kerajinan kayu di Desa Sumberejo.</p>
+
+    <!-- Mebel Kayu -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-kanan">
+        <div class="foto-item foto-utama"><img src="foto/mebel1.jpeg" alt="Mebel1"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 3;">
+          <div class="foto-item"><img src="foto/mebel2.jpeg" alt="Mebel2"></div>
+          <div class="foto-item"><img src="foto/mebel3.jpeg" alt="Mebel3"></div>
+          <div class="foto-item"><img src="foto/mebel4.jpeg" alt="Mebel4"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Mebel Kayu</h3>
+          <span class="kategori-tag">Kerajinan</span>
+        </div>
+        <p>Usaha kriya mebel kayu milik Bapak Sudar di wilayah Wonokerto digerakkan oleh pengerjaan pertukangan kayu lokal secara konsisten. Menggunakan bahan baku utama kayu sengon pilihan serta varian kayu mahoni untuk struktur yang lebih keras, Pak Sudar memfokuskan produksinya pada pengerjaan meja kayu berukuran standar 80 x 40 cm. Setiap meja dikerjakan secara cermat dengan proses pemolesan akhir berupa finishing plitur agar permukaan kayu tampak halus dan mengkilap.
+Kualitas meja buatan Pak Sudar dikenal rapi dan fungsional untuk berbagai kebutuhan rumah tangga maupun fasilitas sekolah. Dalam satu siklus pengerjaan, kapasitas produksi berkisar antara 2 hingga 10 unit meja dengan durasi pengerjaan paling lama satu minggu. Ongkos pengerjaan per unit meja dipatok sebesar Rp15.000, sedangkan harga jual produk pesanan jadi berkisar antara Rp35.000 hingga Rp40.000 per unit.
+Sistem produksi mebel ini sepenuhnya berbasis pesanan kustom. Pengrajin sangat terbuka untuk membuat produk baru sesuai permintaan maupun spesifikasi khusus dari pembeli. Hasil kerajinan mebel kayu ini dipasarkan langsung dari tempat produksi di Wonokerto serta dilayani untuk pemesanan keliling.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Sudar &nbsp; <strong>Telepon:</strong> 082132613260</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Dusun Aran-Aran -->
+  <section class="dusun" id="aran-aran">
+    <div class="dusun-heading">
+      <h2>Aran-Aran</h2>
+    </div>
+    <p class="dusun-desc">Salah satu dusun penghasil tusuk sate di Desa Sumberejo.</p>
+
+    <!-- Tusuk Sate -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-grid-rata">
+        <div class="foto-item"><img src="foto/tusuk_aran1.jpeg" alt="Tusuk Aran1"></div>
+        <div class="foto-item"><img src="foto/tusuk_aran2.jpeg" alt="Tusuk Aran2"></div>
+        <div class="foto-item"><img src="foto/tusuk_aran3.jpeg" alt="Tusuk Aran3"></div>
+        <div class="foto-item"><img src="foto/tusuk_aran4.jpeg" alt="Tusuk Aran4"></div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Tusuk Sate</h3>
+          <span class="kategori-tag">Kerajinan</span>
+        </div>
+        <p>Dusun Aran-Aran di wilayah Desa Sumberejo memiliki potensi komoditas unggulan berupa industri kerajinan pembuatan tusuk sate bambu yang digerakkan secara mandiri oleh warga lokal, salah satunya Ibu Asrifah sejak tahun 2009. Usaha kerajinan ini memanfaatkan bahan baku utama berupa bambu tua pilihan, seperti bambu apus dan petung, yang diperoleh langsung dari tegalan di sekitar wilayah desa. Proses produksi dilakukan secara teliti memadukan teknik pemotongan manual dan penggunaan mesin serut listrik untuk menghasilkan serutan bambu yang halus dan presisi. Jenis produk yang dihasilkan sangat beragam, mencakup berbagai ukuran tusuk sate mulai dari 25 cm hingga 58 cm untuk kebutuhan sate kambing, sate ayam, serta tusuk jajanan seperti sempol dan cilok. Sistem kerja harian meliputi tahapan pencacahan, penjemuran di bawah terik matahari hingga benar-benar kering agar tidak berjamur, serta pemrosesan akhir dengan mesin serut. Dalam satu minggu, produksi rumah tangga ini mampu menghasilkan puluhan ikat serutan bambu berkualitas tinggi. Hasil kerajinan bambu dari Dusun Aran-Aran ini disetorkan secara rutin setiap minggu ke pabrik pengepul serta dipasarkan langsung kepada para pedagang kuliner lokal.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Ibu Asrifah &nbsp; <strong>Telepon:</strong> 081252731181</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Dusun Krajan -->
+  <section class="dusun" id="krajan">
+    <div class="dusun-heading">
+      <h2>Krajan</h2>
+    </div>
+    <p class="dusun-desc">Dusun pusat pemerintahan desa, juga memproduksi tusuk sate.</p>
+
+    <!-- Tusuk Sate -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-atas-penuh">
+        <div class="foto-item foto-utama"><img src="foto/tusuk_krajan_utama.jpeg" alt="Tusuk Krajan Utama"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 3;">
+          <div class="foto-item"><img src="foto/tusuk_krajan1.jpeg" alt="Tusuk Krajan1"></div>
+          <div class="foto-item"><img src="foto/tusuk_krajan2.jpeg" alt="Tusuk Krajan2"></div>
+          <div class="foto-item"><img src="foto/tusuk_krajan3.jpeg" alt="Tusuk Krajan3"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Tusuk Sate</h3>
+          <span class="kategori-tag">Kerajinan</span>
+        </div>
+        <p>Sentra industri UMKM kerajinan tusuk sate bambu di Desa Sumberejo, khususnya terpusat di Dusun Krajan dan Sumber Dewo, digerakkan secara produktif oleh warga lokal sebagai penopang ekonomi penting di samping sektor pertanian. Menggunakan bahan baku utama bambu biasa, proses pemotongan dan pencacahan dilakukan secara mandiri memanfaatkan mesin cacah rakitan keluarga maupun bilah pisau manual. Aktivitas ini umumnya dikerjakan pada sore hari sebagai usaha cadangan usai warga bekerja sebagai buruh tani.
+Batang bambu diolah menjadi potongan mentah (cacahan), lalu dijemur di bawah sinar matahari selama dua hari, atau dipanggang di tungku dapur jika cuaca berawan. Hasil cacahan kering diikat rapi dalam satuan gendel berukuran 33 cm, 43 cm, 50 cm, hingga 55 cm, dengan harga berkisar Rp10.000 hingga Rp12.000 per ikatan. Kapasitas produksi per rumah tangga mampu mencapai 10 gendel per hari atau sekitar 100 gendel per minggu.
+Produk cacahan mentah ini mayoritas diambil oleh tengkulak untuk menjalani tahap penghalusan (serut) dan pembentukan akhir sebelum dipasarkan. Meski demikian, para pengrajin juga sangat terbuka melayani pesanan langsung dari pembeli luar secara mandiri.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Ibu Painem &nbsp; <strong>Telepon:</strong> 085784343743</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Dusun Sumberdewo -->
+  <section class="dusun" id="sumberdewo">
+    <div class="dusun-heading">
+      <h2>Sumberdewo</h2>
+    </div>
+    <p class="dusun-desc">Menggabungkan hasil pertanian, kerajinan, dan peternakan sebagai komoditas utama.</p>
+
+    <!-- Cabai -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto">
+        <div class="foto-item foto-utama"><img src="foto/cabai_utama.jpeg" alt="Cabai Utama"></div>
+        <div class="foto-kecil-wrap" style="--jumlah-kecil: 3;">
+          <div class="foto-item"><img src="foto/cabai1.jpeg" alt="Cabai1"></div>
+          <div class="foto-item"><img src="foto/cabai2.jpeg" alt="Cabai2"></div>
+          <div class="foto-item"><img src="foto/cabai3.jpeg" alt="Cabai3"></div>
+        </div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Cabai</h3>
+          <span class="kategori-tag">Pertanian</span>
+        </div>
+        <p>Sektor pertanian di Dusun Sumber Dewo, Desa Sumberejo, didorong oleh budidaya cabai merah keriting (CMK) berkualitas tinggi yang dikelola secara mandiri oleh Bapak Utomo. Berbekal pengalaman bertani selama dua tahun, beliau mengelola lahan seluas 1.700 meter persegi yang ditanami sekitar 6.000 batang pohon cabai secara swadaya. Proses perawatan tanaman ini mengandalkan pemupukan alami berbasis pupuk kandang kotoran ayam serta bibit unggul yang dibeli secara mandiri. Cabai merah keriting Sumber Dewo memiliki masa tanam relatif singkat sekitar 2,5 bulan hingga panen awal, menghasilkan cabai bertekstur baik dengan tingkat kepedasan yang lebih unggul dibanding varietas sejenis. Hasil panen berkisar antara 10 hingga 40 kilogram per siklus petik, dengan klasifikasi mutu Grade A, B, dan C. Meski menghadapi kendala musiman seperti serangan hama dan penyakit tanaman, produksi pertanian cabai ini tetap berjalan secara konsisten. Hasil panen dipasarkan dalam satuan kilogram melalui sistem tengkulak atau agen lokal untuk memenuhi pasokan pasar wilayah Wajak hingga Jakarta. Produk pertanian ini dijual dengan harga rata-rata Rp20.000 per kilogram, yang disesuaikan saat terjadi fluktuasi pasar.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Utomo &nbsp; <strong>Telepon:</strong> 085655909963</div>
+      </div>
+    </div>
+
+    <!-- Tusuk Sate -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-sejajar">
+        <div class="foto-item"><img src="foto/tusuk_sumberdewo1.jpeg" alt="Tusuk Sumberdewo1"></div>
+        <div class="foto-item"><img src="foto/tusuk_sumberdewo2.jpeg" alt="Tusuk Sumberdewo2"></div>
+        <div class="foto-item"><img src="foto/tusuk_sumberdewo3.jpeg" alt="Tusuk Sumberdewo3"></div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Tusuk Sate</h3>
+          <span class="kategori-tag">Kerajinan</span>
+        </div>
+        <p>Kegiatan produksi tusuk sate bambu di Desa Sumberejo digerakkan oleh para pengrajin lokal, termasuk Muhammad Alif, yang ditekuni secara konsisten. Komoditas ini memanfaatkan bahan baku utama Bambu Petung (Pring Petung) berukuran besar serta Bambu Rampal yang terkenal lebih padat, tebal, dan bernilai jual tinggi. Proses manufakturnya diawali dengan pemotongan bambu, dilanjutkan penyerutan hingga membentuk batang bundar yang halus dan presisi. Saat musim hujan tiba, pengrajin mengantisipasi risiko jamur dengan menerapkan teknik pengeringan khusus berupa pemanggangan di atas perapian agar bambu tetap hangat dan bebas bercak hitam. Produk tusuk sate yang dihasilkan memiliki beragam variasi panjang, seperti 35 cm, 38 cm, 45 cm, hingga 58 cm. Untuk efisiensi, pengikatan tidak dilakukan dengan menghitung satu per satu, melainkan menggunakan takaran ikatan khusus dengan estimasi kapasitas 1.000 biji per ikat. Produk ukuran 58 cm dari Bambu Petung dipatok seharga Rp12.000 per ikat. Pemasaran produk dilakukan melalui penjualan per ikat maupun sistem timbangan kiloan yang disalurkan ke pengepul besar dan pasar lokal untuk memenuhi kebutuhan usaha kuliner.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Muhammad Alif &nbsp; <strong>Telepon:</strong> 085857491086</div>
+      </div>
+    </div>
+
+    <!-- Ayam Potong -->
+    <div class="blok-komoditas">
+      <div class="galeri-foto layout-l-shape">
+        <div class="foto-item foto-samping"><img src="foto/ayam1.jpeg" alt="Ayam1"></div>
+        <div class="foto-item foto-utama"><img src="foto/ayam2.jpeg" alt="Ayam2"></div>
+        <div class="foto-item foto-bawah"><img src="foto/ayam3.jpeg" alt="Ayam3"></div>
+      </div>
+      <div class="komoditas-isi">
+        <div class="komoditas-heading">
+          <h3>Ayam Potong</h3>
+          <span class="kategori-tag">Peternakan</span>
+        </div>
+        <p>Potensi komoditas peternakan di Dusun Sumber Dewo, Desa Sumberejo, digerakkan oleh Pak Ahmad Subeki melalui usaha peternakan ayam potong (broiler) dengan sistem semi-mandiri. Berbeda dari sistem kemitraan yang memanen ayam pada umur 35 hari dengan bobot 20–22 ons (2–2,2 kg), Pak Subeki mengelola peternakan secara mandiri dengan masa pemeliharaan minimal 40 hari. Langkah ini bertujuan mengejar bobot ayam yang lebih besar, yaitu minimal 25 ons (2,5 kg) hingga lebih dari 3 kg per ekor, guna memenuhi spesifikasi khusus pasar lokal seperti pedagang bakso, warung sate, dan jagal kampung. Dengan populasi sekitar 4.000 ekor per periode dan tingkat kematian maksimal 200–300 ekor, peternakan ini mampu menghasilkan pasokan sekitar 3.700 ekor atau setara 10 hingga 15 ton daging ayam per siklus panen. Efisiensi biaya operasional dijaga melalui penggunaan bibit DOC Grade A serta kombinasi pakan starter dan pelet yang memiliki selisih harga Rp30.000–Rp40.000 per sak. Hasil panen disalurkan melalui mitra broker ke pasar tradisional di wilayah Wajak, Turen, Dampit, Bululawang, hingga Rumah Potong Ayam (RPA) Surabaya.</p>
+        <div class="narahubung"><strong>Narahubung:</strong> Bapak Ahmad Subekti &nbsp; <strong>Telepon:</strong> 085755979852</div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  Katalog Potensi Komoditas — Desa Sumberejo, Kecamatan Poncokusumo, Kabupaten Malang<br>
+  Disusun Oleh Tim Mahasiswa KKN Tematik UNESA
+</footer>
+
+</body>
+</html>
